@@ -2,6 +2,9 @@
 
 set -e
 
+PREFIX=dash
+#PROJECT=rstudio2017-shiny-tutorial
+
 cd $(dirname $0)
 
 if [ -f ../passwords.txt ]; then
@@ -9,11 +12,13 @@ if [ -f ../passwords.txt ]; then
   exit 1
 fi
 
-for i in {1000..1999}; do
-  adduser --disabled-password --gecos "" guest$i
+for i in {1000..1300}; do
+  USERNAME=$PREFIX$i
+  adduser --disabled-password --gecos "" $USERNAME
   PASSWORD=`pwgen`
-  echo "guest$i,$PASSWORD" >> ../passwords.txt
-  echo "guest$i:$PASSWORD" | chpasswd
-  mkdir -p /home/guest$i/.rstudio/projects_settings
-  #echo -n "/home/guest$i/user2016-tutorial-shiny/user2016-tutorial-shiny.Rproj" > /home/guest$i/.rstudio/projects_settings/switch-to-project
+  echo "$USERNAME,$PASSWORD" >> ../passwords.txt
+  echo "$USERNAME:$PASSWORD" | chpasswd
+  #mkdir -p /home/$USERNAME/.rstudio/projects_settings
+  #echo -n "/home/$USERNAME/$PROJECT/$PROJECT.Rproj" > /home/$USERNAME/.rstudio/projects_settings/switch-to-project
+  #chown -R $USERNAME:$USERNAME /home/$USERNAME/.rstudio
 done
